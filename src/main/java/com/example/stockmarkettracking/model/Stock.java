@@ -36,11 +36,6 @@ public class Stock {
     @Column(nullable = false)
     private double price;
 
-    @NotBlank(message = "Currency is required")
-    @Pattern(regexp = "^[A-Z]{3}$", message = "Invalid currency code")
-    @Column(nullable = false)
-    private String currency;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
