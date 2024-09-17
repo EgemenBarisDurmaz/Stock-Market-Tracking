@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 public interface StockMapper {
 
     StockDTO toStockDTO(Stock stock);
-    Stock toStock(StockDTO stockDTO);
 
+    Stock toStock(StockDTO stockDTO);
 }
