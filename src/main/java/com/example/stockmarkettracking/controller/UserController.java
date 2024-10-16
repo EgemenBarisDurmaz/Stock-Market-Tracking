@@ -1,8 +1,11 @@
 package com.example.stockmarkettracking.controller;
 
-import com.example.stockmarkettracking.dto.UserDTO;
+import com.example.stockmarkettracking.dto.UserCreationDTO;
+import com.example.stockmarkettracking.dto.UserRetrievalDTO;
+import com.example.stockmarkettracking.dto.UserUpdateDTO;
 import com.example.stockmarkettracking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,26 +18,35 @@ public class UserController {
     public UserService userService;
 
     @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserRetrievalDTO>> getAllUsers() {
+        List<UserRetrievalDTO> users = userService.getAllUsers();
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build();  // Return 204 No Content if no users found
+        }
+        return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{publicId}")
-    public UserDTO getUserByPublicId(@PathVariable String publicId) {
-        return userService.getUserByPublicId(publicId);
+    @GetMapping("/{username}")
+    public ResponseEntity<UserRetrievalDTO> getUserByUsername(@PathVariable String username) {
+        UserRetrievalDTO user = userService.getUserByUserName(username);
+        return ResponseEntity.ok(user);
     }
+
     @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
-        return userService.createUser(userDTO);
+    public ResponseEntity<UserRetrievalDTO> createUser(@RequestBody UserCreationDTO userCreationDTO) {
+        UserRetrievalDTO createdUser = userService.createUser(userCreationDTO);
+        return ResponseEntity.status(201).body(createdUser);
     }
 
-    @PutMapping("/{publicId}")
-    public UserDTO updateUser(@PathVariable String publicId, @RequestBody UserDTO userDTO) {
-        return userService.updateUser(publicId, userDTO);
+    @PutMapping("/{username}")
+    public ResponseEntity<UserRetrievalDTO> updateUser(@PathVariable String username, @RequestBody UserUpdateDTO userUpdateDTO) {
+        UserRetrievalDTO updatedUser = userService.updateUser(username, userUpdateDTO);
+        return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/{publicId}")
-    public void deleteUser(@PathVariable String publicId) {
-        userService.deleteUser(publicId);
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.noContent().build();  // Return 204 No Content
     }
 }
