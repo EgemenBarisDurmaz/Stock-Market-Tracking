@@ -1,6 +1,5 @@
 package com.example.stockmarkettracking.service.impl;
 
-import com.example.stockmarkettracking.dto.UserDTO;
 import com.example.stockmarkettracking.mapper.UserMapper;
 import com.example.stockmarkettracking.model.Role;
 import com.example.stockmarkettracking.model.User;
