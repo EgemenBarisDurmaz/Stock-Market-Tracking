@@ -11,6 +11,5 @@ public interface UserService {
     UserRetrievalDTO getUserByUserName(String username);
     UserRetrievalDTO createUser(UserCreationDTO userCreationDTO);
     UserRetrievalDTO updateUser(String username, UserUpdateDTO userUpdateDTO);
-    //tbu: put username in UserUpdateDTO if possible
     void deleteUser(String username);
 }
