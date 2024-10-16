@@ -1,8 +1,11 @@
 package com.example.stockmarkettracking.controller;
 
-import com.example.stockmarkettracking.dto.StockDTO;
+import com.example.stockmarkettracking.dto.input.StockCreationDTO;
+import com.example.stockmarkettracking.dto.input.StockUpdateDTO;
+import com.example.stockmarkettracking.dto.output.StockRetrievalDTO;
 import com.example.stockmarkettracking.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,27 +18,35 @@ public class StockController {
     private StockService stockService;
 
     @GetMapping
-    public List<StockDTO> getAllStocks() {
-        return stockService.getAllStocks();
+    public ResponseEntity<List<StockRetrievalDTO>> getAllStocks() {
+        List<StockRetrievalDTO> stocks = stockService.getAllStocks();
+        if(stocks.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(stocks);
     }
 
-    @GetMapping("/{publicId}")
-    public StockDTO getStockByPublicId(@PathVariable String publicId) {
-        return stockService.getStockByPublicId(publicId);
+    @GetMapping("/{id}")
+    public ResponseEntity<StockRetrievalDTO> getStockById(@PathVariable Long id) {
+        StockRetrievalDTO stock = stockService.getStockById(id);
+        return ResponseEntity.ok(stock);
     }
 
     @PostMapping
-    public StockDTO createStock(@RequestBody StockDTO stockDTO) {
-        return stockService.createStock(stockDTO);
+    public ResponseEntity<StockRetrievalDTO> createStock(@RequestBody StockCreationDTO stockCreationDTO) {
+        StockRetrievalDTO stock = stockService.createStock(stockCreationDTO);
+        return ResponseEntity.status(201).body(stock);
     }
 
-    @PutMapping("/{publicId}")
-    public StockDTO updateStock(@PathVariable String publicId, @RequestBody StockDTO stockDTO) {
-        return stockService.updateStock(publicId, stockDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<StockRetrievalDTO> updateStock(@PathVariable Long id, @RequestBody StockUpdateDTO stockUpdateDTO) {
+        StockRetrievalDTO stock = stockService.updateStock(id, stockUpdateDTO);
+        return ResponseEntity.ok(stock);
     }
 
-    @DeleteMapping("/{publicId}")
-    public void deleteStock(@PathVariable String publicId) {
-        stockService.deleteStock(publicId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteStock(@PathVariable Long id) {
+        stockService.deleteStock(id);
+        return ResponseEntity.noContent().build();  // 204 No Content
     }
 }
