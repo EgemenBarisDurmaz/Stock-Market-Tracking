@@ -22,10 +22,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Public ID is required")
-    @Column(nullable = false, unique = true)
-    private String publicId;
-
     @NotBlank(message = "Username is required")
     @Column(nullable = false, unique = true)
     private String username;
@@ -36,8 +32,8 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @NotEmpty(message = "Roles are required")
-    private Set<Role> roles;
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @ManyToMany
     @JoinTable(

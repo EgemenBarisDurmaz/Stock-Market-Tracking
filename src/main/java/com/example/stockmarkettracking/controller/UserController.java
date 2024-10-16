@@ -1,8 +1,8 @@
 package com.example.stockmarkettracking.controller;
 
-import com.example.stockmarkettracking.dto.UserCreationDTO;
-import com.example.stockmarkettracking.dto.UserRetrievalDTO;
-import com.example.stockmarkettracking.dto.UserUpdateDTO;
+import com.example.stockmarkettracking.dto.input.UserCreationDTO;
+import com.example.stockmarkettracking.dto.output.UserRetrievalDTO;
+import com.example.stockmarkettracking.dto.input.UserUpdateDTO;
 import com.example.stockmarkettracking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

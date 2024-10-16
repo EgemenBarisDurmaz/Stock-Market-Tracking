@@ -1,5 +1,6 @@
-package com.example.stockmarkettracking.dto;
+package com.example.stockmarkettracking.dto.output;
 
+import com.example.stockmarkettracking.dto.StockDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

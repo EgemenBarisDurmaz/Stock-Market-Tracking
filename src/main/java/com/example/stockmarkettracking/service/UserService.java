@@ -1,8 +1,8 @@
 package com.example.stockmarkettracking.service;
 
-import com.example.stockmarkettracking.dto.UserCreationDTO;
-import com.example.stockmarkettracking.dto.UserRetrievalDTO;
-import com.example.stockmarkettracking.dto.UserUpdateDTO;
+import com.example.stockmarkettracking.dto.input.UserCreationDTO;
+import com.example.stockmarkettracking.dto.output.UserRetrievalDTO;
+import com.example.stockmarkettracking.dto.input.UserUpdateDTO;
 
 import java.util.List;
 

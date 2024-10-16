@@ -1,10 +1,13 @@
 package com.example.stockmarkettracking.service.impl;
 
+import com.example.stockmarkettracking.dto.input.UserCreationDTO;
+import com.example.stockmarkettracking.dto.output.UserRetrievalDTO;
+import com.example.stockmarkettracking.dto.input.UserUpdateDTO;
 import com.example.stockmarkettracking.mapper.UserMapper;
-import com.example.stockmarkettracking.model.Role;
 import com.example.stockmarkettracking.model.User;
 import com.example.stockmarkettracking.repository.UserRepository;
 import com.example.stockmarkettracking.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,51 +29,46 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public List<UserDTO> getAllUsers() {
-        logger.info("Fetching all users");
-        return userRepository.findAll().stream()
-                .map(userMapper::toUserDTO)
+    public List<UserRetrievalDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userMapper::toUserRetrievalDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public UserDTO getUserByPublicId(String publicId) {
-        logger.info("Fetching user with publicId: {}", publicId);
-        Optional<User> user = userRepository.findByPublicId(publicId);
-        return user.map(userMapper::toUserDTO).orElse(null);
+    public UserRetrievalDTO getUserByUserName(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return userMapper.toUserRetrievalDTO(user);
     }
 
     @Override
-    public UserDTO createUser(UserDTO userDTO) {
-        logger.info("Creating new user with username: {}", userDTO.getUsername());
-        User user = userMapper.toUser(userDTO);
+    public UserRetrievalDTO createUser(UserCreationDTO userCreationDTO) {
+        logger.info("Creating new user with username: {}", userCreationDTO.getUsername());
+        User user = userMapper.toUser(userCreationDTO);
         User savedUser = userRepository.save(user);
-        return userMapper.toUserDTO(savedUser);
+        return userMapper.toUserRetrievalDTO(savedUser);
     }
 
     @Override
-    public UserDTO updateUser(String publicId, UserDTO userDTO) {
-        logger.info("Updating user with publicId: {}", publicId);
-        Optional<User> existingUserOptional = userRepository.findByPublicId(publicId);
-        if (existingUserOptional.isPresent()) {
-            User existingUser = existingUserOptional.get();
-            existingUser.setUsername(userDTO.getUsername());
-            Set<Role> roles = userDTO.getRoles().stream()
-                    .map(Role::valueOf)
-                    .collect(Collectors.toSet());
-            existingUser.setRoles(roles);
+    public UserRetrievalDTO updateUser(String username, UserUpdateDTO userUpdateDTO) {
+        logger.info("Updating user with username: {}", username);
+        User existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-            User updatedUser = userRepository.save(existingUser);
+        existingUser.setPassword(userUpdateDTO.getPassword());
+        User updatedUser = userRepository.save(existingUser);
+        return userMapper.toUserRetrievalDTO(updatedUser);
+    }
 
-            return userMapper.toUserDTO(updatedUser);
+    @Override
+    public void deleteUser(String username) {
+        Optional<User> existingUser = userRepository.findByUsername(username);
+        if (existingUser.isPresent()) {
+            userRepository.delete(existingUser.get());
+        } else {
+            throw new EntityNotFoundException("User not found");
         }
-        return null;
-    }
-
-    @Override
-    public void deleteUser(String publicId) {
-        logger.info("Deleting user with publicId: {}", publicId);
-        Optional<User> userOptional = userRepository.findByPublicId(publicId);
-        userOptional.ifPresent(userRepository::delete);
     }
 }
