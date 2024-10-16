@@ -1,11 +1,15 @@
 package com.example.stockmarkettracking.service.impl;
 
 import com.example.stockmarkettracking.dto.StockDTO;
+import com.example.stockmarkettracking.dto.input.StockCreationDTO;
+import com.example.stockmarkettracking.dto.input.StockUpdateDTO;
+import com.example.stockmarkettracking.dto.output.StockRetrievalDTO;
 import com.example.stockmarkettracking.mapper.StockMapper;
 import com.example.stockmarkettracking.model.Stock;
 import com.example.stockmarkettracking.model.User;
 import com.example.stockmarkettracking.repository.StockRepository;
 import com.example.stockmarkettracking.service.StockService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,42 +28,45 @@ public class StockServiceImpl implements StockService {
 
 
     @Override
-    public List<StockDTO> getAllStocks() {
+    public List<StockRetrievalDTO> getAllStocks() {
         return stockRepository.findAll().stream()
-                .map(stockMapper::toStockDTO)
+                .map(stockMapper::toStockRetrievalDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public StockDTO getStockByPublicId(String publicId) {
-        Optional<Stock> stock = stockRepository.findByPublicId(publicId);
-        return stock.map(stockMapper::toStockDTO).orElse(null);
+    public StockRetrievalDTO getStockById(Long id) {
+        Stock stock = stockRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Stock not found"));
+        return stockMapper.toStockRetrievalDTO(stock);
     }
 
     @Override
-    public StockDTO createStock(StockDTO stockDTO) {
-        Stock stock = stockMapper.toStock(stockDTO);
+    public StockRetrievalDTO createStock(StockCreationDTO stockCreationDTO) {
+        Stock stock = stockMapper.toStock(stockCreationDTO);
         Stock savedStock = stockRepository.save(stock);
-        return stockMapper.toStockDTO(savedStock);
+        return stockMapper.toStockRetrievalDTO(savedStock);
     }
 
     @Override
-    public StockDTO updateStock(String publicId, StockDTO stockDTO) {
-        Optional<Stock> existingStock = stockRepository.findByPublicId(publicId);
+    public StockRetrievalDTO updateStock(Long id, StockUpdateDTO stockUpdateDTO) {
+        Stock existingStock = stockRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Stock not found"));
+
+        stockMapper.updateStockFromDto(stockUpdateDTO, existingStock);
+        Stock updatedStock = stockRepository.save(existingStock);
+        return stockMapper.toStockRetrievalDTO(updatedStock);
+    }
+
+    @Override
+    public void deleteStock(Long id) {
+        Optional<Stock> existingStock = stockRepository.findById(id);
         if (existingStock.isPresent()) {
-            Stock stock = existingStock.get();
-            stock.setName(stockDTO.getName());
-            stock.setSymbol(stockDTO.getSymbol());
-            stock.setPrice(stockDTO.getPrice());
-            Stock updatedStock = stockRepository.save(stock);
-            return stockMapper.toStockDTO(updatedStock);
+            stockRepository.delete(existingStock.get());
+        } else {
+            throw new EntityNotFoundException("Stock not found");
         }
-        return null;
     }
 
-    @Override
-    public void deleteStock(String publicId) {
-        Optional<Stock> stockOptional = stockRepository.findByPublicId(publicId);
-        stockOptional.ifPresent(stockRepository::delete);
-    }
+
 }
