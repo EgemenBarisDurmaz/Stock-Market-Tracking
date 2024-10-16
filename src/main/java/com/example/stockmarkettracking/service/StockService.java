@@ -1,6 +1,5 @@
 package com.example.stockmarkettracking.service;
 
-import com.example.stockmarkettracking.dto.StockDTO;
 import com.example.stockmarkettracking.dto.input.StockCreationDTO;
 import com.example.stockmarkettracking.dto.input.StockUpdateDTO;
 import com.example.stockmarkettracking.dto.output.StockRetrievalDTO;

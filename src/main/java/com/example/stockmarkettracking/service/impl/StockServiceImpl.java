@@ -1,12 +1,10 @@
 package com.example.stockmarkettracking.service.impl;
 
-import com.example.stockmarkettracking.dto.StockDTO;
 import com.example.stockmarkettracking.dto.input.StockCreationDTO;
 import com.example.stockmarkettracking.dto.input.StockUpdateDTO;
 import com.example.stockmarkettracking.dto.output.StockRetrievalDTO;
 import com.example.stockmarkettracking.mapper.StockMapper;
 import com.example.stockmarkettracking.model.Stock;
-import com.example.stockmarkettracking.model.User;
 import com.example.stockmarkettracking.repository.StockRepository;
 import com.example.stockmarkettracking.service.StockService;
 import jakarta.persistence.EntityNotFoundException;
@@ -67,6 +65,4 @@ public class StockServiceImpl implements StockService {
             throw new EntityNotFoundException("Stock not found");
         }
     }
-
-
 }
