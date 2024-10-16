@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -38,6 +39,11 @@ public class User {
     @NotEmpty(message = "Roles are required")
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Stock> stocks;
+    @ManyToMany
+    @JoinTable(
+            name = "user_stocks",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "stock_id")
+    )
+    private Set<Stock> stocks = new HashSet<>();
 }
