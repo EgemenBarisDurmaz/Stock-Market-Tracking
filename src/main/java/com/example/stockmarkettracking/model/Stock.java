@@ -22,10 +22,6 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Public ID is required")
-    @Column(nullable = false, unique = true)
-    private String publicId;
-
     @NotBlank(message = "Symbol is required")
     @Pattern(regexp = "^[A-Z]{1,5}$", message = "Invalid stock symbol")
     @Column(nullable = false, unique = true)
