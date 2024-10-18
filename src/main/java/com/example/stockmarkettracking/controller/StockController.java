@@ -4,6 +4,7 @@ import com.example.stockmarkettracking.dto.input.StockCreationDTO;
 import com.example.stockmarkettracking.dto.input.StockUpdateDTO;
 import com.example.stockmarkettracking.dto.output.StockRetrievalDTO;
 import com.example.stockmarkettracking.service.StockService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class StockController {
     }
 
     @PostMapping
-    public ResponseEntity<StockRetrievalDTO> createStock(@RequestBody StockCreationDTO stockCreationDTO) {
+    public ResponseEntity<StockRetrievalDTO> createStock(@Valid @RequestBody StockCreationDTO stockCreationDTO) {
         StockRetrievalDTO stock = stockService.createStock(stockCreationDTO);
         return ResponseEntity.status(201).body(stock);
     }

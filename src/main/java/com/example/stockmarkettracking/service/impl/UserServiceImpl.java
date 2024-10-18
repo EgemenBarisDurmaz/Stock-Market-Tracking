@@ -3,7 +3,9 @@ package com.example.stockmarkettracking.service.impl;
 import com.example.stockmarkettracking.dto.input.UserCreationDTO;
 import com.example.stockmarkettracking.dto.output.UserRetrievalDTO;
 import com.example.stockmarkettracking.dto.input.UserUpdateDTO;
+import com.example.stockmarkettracking.exception.ResourceNotFoundException;
 import com.example.stockmarkettracking.mapper.UserMapper;
+import com.example.stockmarkettracking.model.Role;
 import com.example.stockmarkettracking.model.User;
 import com.example.stockmarkettracking.repository.UserRepository;
 import com.example.stockmarkettracking.service.UserService;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,6 +50,7 @@ public class UserServiceImpl implements UserService {
     public UserRetrievalDTO createUser(UserCreationDTO userCreationDTO) {
         logger.info("Creating new user with username: {}", userCreationDTO.getUsername());
         User user = userMapper.toUser(userCreationDTO);
+        user.setRoles(Set.of(Role.USER));
         User savedUser = userRepository.save(user);
         return userMapper.toUserRetrievalDTO(savedUser);
     }
@@ -55,7 +59,7 @@ public class UserServiceImpl implements UserService {
     public UserRetrievalDTO updateUser(String username, UserUpdateDTO userUpdateDTO) {
         logger.info("Updating user with username: {}", username);
         User existingUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         existingUser.setPassword(userUpdateDTO.getPassword());
         User updatedUser = userRepository.save(existingUser);
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
         if (existingUser.isPresent()) {
             userRepository.delete(existingUser.get());
         } else {
-            throw new EntityNotFoundException("User not found");
+            throw new ResourceNotFoundException("User not found");
         }
     }
 }
