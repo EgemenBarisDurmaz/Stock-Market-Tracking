@@ -13,7 +13,7 @@ public class StockUpdateDTO {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @Positive(message = "Price must be positive")
+    @Positive(message = "Price has to be positive")
     private double price;
 
 }
