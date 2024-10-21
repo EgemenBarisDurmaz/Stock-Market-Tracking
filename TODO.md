@@ -1,7 +1,7 @@
 Read: https://spring.io/guides/tutorials/rest
 Complete input validations, return correct Status Code
 filtering, sorting, and pagination
-SECURITY: use SSL/TLS, OAuth2, API Keys, Request-level authorization, 
+SECURITY: use SSL/TLS, OAuth2, API Keys, Request-level authorization,
 Rate Limiting(Use 429 for Rate Limits)
 
 Ensure Proper Testing for All Endpoints (unit, integration)

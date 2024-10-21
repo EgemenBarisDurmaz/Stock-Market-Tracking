@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface StockService {
     List<StockRetrievalDTO> getAllStocks();
+
     StockRetrievalDTO getStockById(Long id);
+
     StockRetrievalDTO createStock(StockCreationDTO stockCreationDTO);
+
     StockRetrievalDTO updateStock(Long id, StockUpdateDTO stockUpdateDTO);
+
     void deleteStock(Long id);
 }

@@ -5,4 +5,4 @@ public enum Country {
     USA,
     FINLAND,
     TURKEY
-    }
+}

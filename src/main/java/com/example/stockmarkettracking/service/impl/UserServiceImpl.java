@@ -1,8 +1,8 @@
 package com.example.stockmarkettracking.service.impl;
 
 import com.example.stockmarkettracking.dto.input.UserCreationDTO;
-import com.example.stockmarkettracking.dto.output.UserRetrievalDTO;
 import com.example.stockmarkettracking.dto.input.UserUpdateDTO;
+import com.example.stockmarkettracking.dto.output.UserRetrievalDTO;
 import com.example.stockmarkettracking.exception.ResourceNotFoundException;
 import com.example.stockmarkettracking.mapper.UserMapper;
 import com.example.stockmarkettracking.model.Role;

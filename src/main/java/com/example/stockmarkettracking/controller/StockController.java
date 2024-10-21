@@ -21,7 +21,7 @@ public class StockController {
     @GetMapping
     public ResponseEntity<List<StockRetrievalDTO>> getAllStocks() {
         List<StockRetrievalDTO> stocks = stockService.getAllStocks();
-        if(stocks.isEmpty()) {
+        if (stocks.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(stocks);

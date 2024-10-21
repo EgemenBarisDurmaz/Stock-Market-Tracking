@@ -13,4 +13,4 @@ public class UserRetrievalDTO {
     private String username;
     private Set<String> roles;
     private Set<StockRetrievalDTO> stocks;
- }
+}

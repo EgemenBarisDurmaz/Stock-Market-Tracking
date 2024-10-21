@@ -3,7 +3,6 @@ package com.example.stockmarkettracking.dto.output;
 
 import com.example.stockmarkettracking.model.Country;
 import com.example.stockmarkettracking.model.MarketType;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

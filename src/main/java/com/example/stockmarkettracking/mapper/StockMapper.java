@@ -12,7 +12,7 @@ public interface StockMapper {
 
     StockRetrievalDTO toStockRetrievalDTO(Stock stock);
 
-    Stock toStock(StockCreationDTO stockCreationDTO );
+    Stock toStock(StockCreationDTO stockCreationDTO);
 
     void updateStockFromDto(StockUpdateDTO stockUpdateDTO, @MappingTarget Stock stock);
 }
