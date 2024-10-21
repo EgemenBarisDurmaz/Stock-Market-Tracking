@@ -32,4 +32,8 @@ public class Stock {
 
     @ManyToMany(mappedBy = "stocks")
     private Set<User> users = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "market_id", nullable = false)
+    private Market market;
 }
