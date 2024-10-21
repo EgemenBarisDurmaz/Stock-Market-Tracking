@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StockUpdateDTO {
+
     @NotBlank(message = "Name is required")
     private String name;
 

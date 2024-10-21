@@ -18,5 +18,4 @@ public class MarketRetrievalDTO {
     private Country country;
     private String location;
     private HashSet<StockRetrievalDTO> stocks;
-
 }
