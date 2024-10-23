@@ -4,14 +4,11 @@ package com.example.stockmarkettracking.controller;
 import com.example.stockmarkettracking.dto.input.MarketCreationDTO;
 import com.example.stockmarkettracking.dto.input.MarketUpdateDTO;
 import com.example.stockmarkettracking.dto.output.MarketRetrievalDTO;
-import com.example.stockmarkettracking.model.Market;
 import com.example.stockmarkettracking.service.MarketService;
-import com.example.stockmarkettracking.service.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -24,10 +21,11 @@ public class MarketController {
     @GetMapping
     public ResponseEntity<List<MarketRetrievalDTO>> getAllMarkets() {
         List<MarketRetrievalDTO> markets = marketService.getAllMarkets();
-        if(!markets.isEmpty()) {
+        if (!markets.isEmpty()) {
+
             return ResponseEntity.ok(markets);
         }
-            return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
@@ -53,9 +51,6 @@ public class MarketController {
         marketService.deleteMarketById(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
 
 
 }
