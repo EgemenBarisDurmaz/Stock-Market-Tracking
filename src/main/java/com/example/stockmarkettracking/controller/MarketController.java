@@ -22,7 +22,6 @@ public class MarketController {
     public ResponseEntity<List<MarketRetrievalDTO>> getAllMarkets() {
         List<MarketRetrievalDTO> markets = marketService.getAllMarkets();
         if (!markets.isEmpty()) {
-
             return ResponseEntity.ok(markets);
         }
         return ResponseEntity.noContent().build();
