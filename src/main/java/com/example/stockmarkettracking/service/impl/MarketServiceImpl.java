@@ -50,6 +50,7 @@ public class MarketServiceImpl implements MarketService {
         return marketMapper.toMarketRetrievalDTO(market);
     }
 
+
     @Override
     public MarketRetrievalDTO updateMarket(Long id, MarketUpdateDTO marketUpdateDTO) {
         Market existingMarket = marketRepository.findById(id)
